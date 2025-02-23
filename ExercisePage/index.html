@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Muscle Map</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        background: url("images/back.jpg") no-repeat center center fixed;
+        background-size: cover;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: black;
+        padding: 15px 20px;
+      }
+
+      .navbar .logo {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+      }
+
+      .nav-links li {
+        margin: 0 15px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #ffcc00;
+      }
+
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle div {
+        width: 30px;
+        height: 3px;
+        background: white;
+        margin: 5px 0;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: black;
+          text-align: center;
+        }
+
+        .nav-links li {
+          margin: 10px 0;
+        }
+
+        .menu-toggle {
+          display: flex;
+        }
+
+        .nav-active {
+          display: flex;
+        }
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1000px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 80px auto 0;
+        padding: 20px;
+      }
+
+      img {
+        width: 100%;
+        max-width: 380px;
+        height: auto;
+      }
+
+      .main-footer {
+        background-color: #131a20;
+        color: #fff;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 2rem;
+      }
+
+      /* Left side: brand, tagline, call-to-action button */
+      .footer-left {
+        max-width: 300px;
+        flex: 1 1 250px;
+      }
+
+      .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      .footer-cta-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #0d632b;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-cta-button:hover {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+      }
+
+      .footer-columns {
+        display: flex;
+        flex: 3 1 600px;
+        justify-content: space-around;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 130px;
+      }
+
+      .footer-col h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .footer-col a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #2e353b;
+        padding-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: #767f88;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .footer-bottom a {
+        color: #767f88;
+        text-decoration: none;
+      }
+
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+        transition: filter 0.2s ease;
+      }
+
+      .social-icons a:hover img {
+        filter: brightness(1.5) invert(0.7);
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+
+      .image-container {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+      }
+
+      .thought-bubble {
+        position: absolute;
+        top: 5%;
+        right: -280px;
+        background-color: #f5f5dcb2;
+        padding: 20px;
+        border-radius: 30px;
+        max-width: 250px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        font-size: 20px;
+        line-height: 1.4;
+      }
+
+      .thought-bubble::before {
+        content: "";
+        position: absolute;
+        width: 25px;
+        height: 30px;
+        background-color: #f5f5dcb2;
+        border-radius: 50%;
+        left: -30px;
+        top: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .thought-bubble::after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #f5f5dcb2;
+        border-radius: 50%;
+        left: -45px;
+        top: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          width: 100%;
+          padding: 10px;
+          margin-top: 120px;
+        }
+
+        img {
+          max-width: 100%;
+        }
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-columns {
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1rem;
+        }
+      }
+
+      @media (max-width: 1200px) {
+        .thought-bubble {
+          right: -260px;
+          max-width: 220px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .thought-bubble {
+          position: static;
+          margin: 20px auto;
+          max-width: 80%;
+        }
+
+        .thought-bubble::before,
+        .thought-bubble::after {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">Dynamic Track</div>
+      <ul class="nav-links">
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="../primarypage/primary.php">Dashboard</a></li>
+        <li><a href="../ContactPage/contact.php">Contact Us</a></li>
+      </ul>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="image-container">
+        <img
+          src="images/imageMuscle-removebg-preview.png"
+          usemap="#image-map"
+          alt="image-map"
+        />
+        <div class="thought-bubble">
+          Click on any muscle group to learn more about its function, exercises,
+          and training tips! Let's build a stronger, healthier you together. 💪
+        </div>
+      </div>
+
+      <!-- Define clickable areas -->
+      <!-- Image Map Generated by http://www.image-map.net/ -->
+      <map name="image-map">
+        <area
+          target=""
+          alt="chest"
+          title="chest"
+          href="chest.html"
+          coords="160,172,37"
+          shape="circle"
+        />
+        <area
+          target=""
+          alt="chest"
+          title="chest"
+          href="chest.html"
+          coords="218,172,36"
+          shape="circle"
+        />
+        <area
+          target=""
+          alt="abs"
+          title="abs"
+          href="abs.html"
+          coords="140,211,235,317"
+          shape="rect"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="104,158,22"
+          shape="circle"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="88,172,107,178,94,192"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="108,133,137,133,126,147"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="274,154,23"
+          shape="circle"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="267,175,287,191,293,168"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="shoulder"
+          title="shoulder"
+          href="shoulder.html"
+          coords="237,132,259,129,251,147"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="trapez"
+          title="trapez"
+          href="trapez.html"
+          coords="163,103,126,124,163,131"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="trapez"
+          title="trapez"
+          href="trapez.html"
+          coords="213,104,251,124,212,131"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="lats"
+          title="lats"
+          href="lats.html"
+          coords="122,192,119,212,136,236,139,205"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="lats"
+          title="lats"
+          href="lats.html"
+          coords="252,192,257,210,238,236,238,203"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="biceps"
+          title="biceps"
+          href="biceps.html"
+          coords="89,210,85,234,96,250,118,226,116,197,115,186,104,191,93,200"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="biceps"
+          title="biceps"
+          href="biceps.html"
+          coords="256,178,270,184,283,197,290,226,288,242,276,245,264,230,255,192"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="tricpes"
+          title="tricpes"
+          href="triceps.html"
+          coords="86,184,78,194,77,208,83,219,91,198"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="tricpes"
+          title="tricpes"
+          href="triceps.html"
+          coords="292,181,298,189,303,202,302,219,294,214,290,196"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="legs"
+          title="legs"
+          href="legs.html"
+          coords="121,336,115,368,120,411,133,445,147,445,169,460,176,390,179,359"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="legs"
+          title="legs"
+          href="legs.html"
+          coords="127,475,126,490,116,511,115,534,120,551,124,574,135,582"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="legs"
+          title="legs"
+          href="legs.html"
+          coords="160,484,157,493,164,510,167,519,167,535,161,551,154,558,150,590,148,507"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="legs"
+          title="legs"
+          href="legs.html"
+          coords="195,348,190,360,190,377,196,396,202,413,200,432,206,460,221,451,226,429,239,448,245,437,252,423,254,406,255,381,251,358,250,342,245,332"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="legs"
+          title="legs"
+          href="legs.html"
+          coords="211,485,212,499,205,518,206,535,210,546,216,564,221,594,233,594,247,595,247,566,256,551,256,539,256,515,248,493,246,484"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="forearms"
+          title="forearms"
+          href="forearms.html"
+          coords="75,231,64,251,62,268,66,280,60,295,61,320,75,309,86,304,99,281,103,260"
+          shape="poly"
+        />
+        <area
+          target=""
+          alt="forearms"
+          title="forearms"
+          href="forearms.html"
+          coords="274,252,271,270,278,289,287,307,293,326,308,323,312,299,310,269,310,246,307,233"
+          shape="poly"
+        />
+      </map>
+    </div>
+
+    <!--footer-->
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-left">
+          <div class="footer-logo">Dynamic Track</div>
+          <p class="footer-text">Find your healthy, and your happy.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          @2025 Dynamic Track, Inc. Community Guidelines Feedback Terms Privacy
+          API Cookie Preferences
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        document.querySelector(".nav-links").classList.toggle("nav-active");
+      }
+    </script>
+  </body>
+</html>

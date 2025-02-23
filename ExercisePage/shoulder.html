@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Navigation Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+      }
+
+      .navbar {
+        background-color: #2c7ce3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        font-family: "Oswald", sans-serif;
+        letter-spacing: 1px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        transition: color 0.3s ease, transform 0.3s ease;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: #e0f2fe;
+        transform: scale(1.1);
+      }
+
+      /* Mobile menu toggle icon */
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 3px 0;
+        transition: 0.4s;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex; /* This makes the menu button visible */
+        }
+
+        .nav-links {
+          display: none; /* Initially hide the menu on small screens */
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: #2c7ce3;
+          text-align: center;
+          padding: 10px 0;
+        }
+
+        .nav-links.active {
+          display: flex; /* Show when menu is toggled */
+        }
+
+        .nav-links a {
+          margin: 10px 0;
+          display: block;
+        }
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: #2c7ce3;
+        color: white;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .tag {
+        background: #ffca28;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+      .images img {
+        width: 48%;
+        border-radius: 5px;
+      }
+      .steps {
+        margin-top: 20px;
+      }
+      .step {
+        background: #e3f2fd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .step-number {
+        background: #0d47a1;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      @media (max-width: 768px) {
+        .images {
+          flex-direction: column;
+          align-items: center;
+        }
+        .images img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .step {
+          flex-direction: column;
+        }
+      }
+
+      .main-footer {
+        background-color: #2c7ce3; /* Dark background */
+        color: #fff;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      /* Top row: brand + columns */
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 2rem;
+      }
+
+      /* Left side: brand, tagline, call-to-action button */
+      .footer-left {
+        max-width: 300px;
+        flex: 1 1 250px;
+      }
+
+      .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      .footer-cta-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #0d632b;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-cta-button:hover {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+      }
+
+      /* Right side: columns for Products, Resources, Company, etc. */
+      .footer-columns {
+        display: flex;
+        flex: 3 1 600px;
+        justify-content: space-around;
+        gap: 2rem;
+        /* Adjust space between columns as needed */
+      }
+
+      .footer-col {
+        min-width: 130px; /* ensures columns don't collapse too small */
+      }
+
+      .footer-col h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .footer-col a:hover {
+        color: #fff;
+      }
+
+      /* Bottom row: copyright, legal links, social icons */
+      .footer-bottom {
+        border-top: 1px solid #2e353b;
+        padding-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: black;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .footer-bottom a {
+        color: #767f88;
+        text-decoration: none;
+      }
+
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1); /* make white icons if they're black by default */
+        transition: filter 0.2s ease;
+      }
+
+      .social-icons a:hover img {
+        filter: brightness(1.5) invert(0.7);
+      }
+
+      @media (max-width: 480px) {
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-columns {
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="logo">DynamicTrack</a>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="../index.php">Home</a>
+        <a href="../primarypage/primary.php">Nutrition</a>
+        <a href="../ContactPage/contact.php">Contact Us</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">
+        Shoulder Press Dumbell / Shoulder Press Machine (1)
+      </div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Dumbbell-Shoulder-Press.gif" alt="Exercise Step 1" />
+        <img src="images/shoulderpressmachine.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For dumbbells, sit on a bench with back support, holding dumbbells
+            at shoulder height with palms facing forward. For the machine,
+            adjust the seat so the handles align with your shoulders.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Press the dumbbells or machine handles upward until your arms are
+            fully extended but not locked out.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Lower the weights back to the starting position in a controlled
+            motion. Keep your core engaged and maintain proper posture.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Rear-Delt-Dumbbell / Rear-Delt-Machine (2)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/reardeltdumbell.gif" alt="Exercise Step 1" />
+        <img src="images/Rear-Delt-Machine-Flys.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For dumbbells, sit on a bench with back support, holding dumbbells
+            at shoulder height with palms facing forward. For the machine,
+            adjust the seat so the handles align with your shoulders. Both
+            exercises target the rear deltoid muscles.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Press the dumbbells or machine handles upward, focusing on engaging
+            the rear delts, until your arms are fully extended but not locked
+            out.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Lower the weights back to the starting position in a controlled
+            motion, ensuring the rear delts remain activated throughout. Keep
+            your core engaged and maintain proper posture.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">
+        Lateral-Raises-Dumbbell / Later-Raises-Machine (3)
+      </div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Dumbbell-Lateral-Raise.gif" alt="Exercise Step 1" />
+        <img src="images/machineLateralRaises.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For dumbbells, stand with your feet shoulder-width apart, holding
+            dumbbells by your sides. For the machine, adjust the seat so the
+            handles are at shoulder height, and position yourself comfortably.
+            Both exercises primarily target the lateral deltoid muscles, with
+            emphasis on the rear delts.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Lift the dumbbells or machine handles outward to the sides, focusing
+            on squeezing the rear delts as you raise the weights until your arms
+            are parallel to the floor.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Lower the weights back to the starting position in a controlled
+            motion, keeping your rear delts engaged throughout the movement.
+            Maintain a strong posture and avoid swinging the weights.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <!--footer-->
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-left">
+          <div class="footer-logo">Dynamic Track</div>
+          <p class="footer-text">Find your healthy, and your happy.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          @2025 Dynamic Track, Inc. Community Guidelines Feedback Terms Privacy
+          API Cookie Preferences
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

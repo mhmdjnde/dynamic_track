@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Navigation Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+      }
+
+      .navbar {
+        background-color: #2c7ce3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        font-family: "Oswald", sans-serif;
+        letter-spacing: 1px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        transition: color 0.3s ease, transform 0.3s ease;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: #e0f2fe;
+        transform: scale(1.1);
+      }
+
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 3px 0;
+        transition: 0.4s;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: #2c7ce3;
+          text-align: center;
+          padding: 10px 0;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-links a {
+          margin: 10px 0;
+          display: block;
+        }
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: #2c7ce3;
+        color: white;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .tag {
+        background: #ffca28;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+      .images img {
+        width: 48%;
+        border-radius: 5px;
+      }
+      .steps {
+        margin-top: 20px;
+      }
+      .step {
+        background: #e3f2fd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .step-number {
+        background: #0d47a1;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      @media (max-width: 768px) {
+        .images {
+          flex-direction: column;
+          align-items: center;
+        }
+        .images img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .step {
+          flex-direction: column;
+        }
+      }
+
+      .main-footer {
+        background-color: #2c7ce3;
+        color: #fff;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 2rem;
+      }
+
+      .footer-left {
+        max-width: 300px;
+        flex: 1 1 250px;
+      }
+
+      .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      .footer-cta-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #0d632b;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-cta-button:hover {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+      }
+
+      .footer-columns {
+        display: flex;
+        flex: 3 1 600px;
+        justify-content: space-around;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 130px;
+      }
+
+      .footer-col h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .footer-col a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #2e353b;
+        padding-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: black;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .footer-bottom a {
+        color: #767f88;
+        text-decoration: none;
+      }
+
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1); /* make white icons if they're black by default */
+        transition: filter 0.2s ease;
+      }
+
+      .social-icons a:hover img {
+        filter: brightness(1.5) invert(0.7);
+      }
+
+      @media (max-width: 480px) {
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-columns {
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="logo">DynamicTrack</a>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="../index.php">Home</a>
+        <a href="../primarypage/primary.php">Nutrition</a>
+        <a href="../ContactPage/contact.php">Contact Us</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">Lat Pulldown Machine (1)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Lat-Pulldown.gif" alt="Exercise Step 1" />
+        <img src="images/LatPulldownMachine.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Sit down at the lat pulldown machine with your feet flat on the
+            floor and knees secured under the pad. Grab the bar with a wide
+            grip, ensuring your palms are facing forward. This exercise
+            primarily targets the lats, with the rear delts activated as
+            stabilizers throughout the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Pull the bar down towards your chest, focusing on engaging the rear
+            delts and lats. Keep your back slightly arched and avoid using your
+            arms to pull the bar—let the back muscles do the work.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly release the bar back to the starting position, maintaining
+            control throughout the movement and keeping your rear delts engaged
+            as stabilizers.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Cable Rows (2)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/close-grip-cable-row.gif" alt="Exercise Step 1" />
+        <img src="images/CableLats.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Sit at the cable row machine with your feet secured and knees
+            slightly bent. Grab the handle with both hands, palms facing each
+            other, and keep your back straight. This exercise targets the lats,
+            with the rear delts engaged as stabilizers throughout the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Pull the handle towards your torso, focusing on squeezing your
+            shoulder blades together and engaging your rear delts as you row the
+            weight. Keep your elbows close to your body and avoid shrugging your
+            shoulders.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly return the handle to the starting position, maintaining
+            control and ensuring the rear delts remain activated as stabilizers
+            during the motion.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">T-Bar-Row (3)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/T-Bar-Row.gif" alt="Exercise Step 1" />
+        <img src="images/Bent-Over-Dumbbell-Row.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For T-Bar Rows, stand with your feet shoulder-width apart, bending
+            slightly at the knees and hips, and grab the handles with both
+            hands. For Bent-Over Rows, bend at the hips and knees to lower your
+            torso while keeping your back straight, and hold a barbell with an
+            overhand grip. Both exercises target the lats, with the rear delts
+            activated as stabilizers throughout the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            For T-Bar Rows, pull the handles towards your chest, focusing on
+            engaging the lats and rear delts as you row the weight. For
+            Bent-Over Rows, pull the barbell towards your lower ribcage, keeping
+            your elbows close to your body and your rear delts engaged. Keep
+            your core tight to protect your lower back.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly return the weight to the starting position, ensuring control
+            and maintaining rear delt activation as stabilizers. Focus on the
+            lats throughout the movement and avoid shrugging your shoulders.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <!--footer-->
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-left">
+          <div class="footer-logo">Dynamic Track</div>
+          <p class="footer-text">Find your healthy, and your happy.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          @2025 Dynamic Track, Inc. Community Guidelines Feedback Terms Privacy
+          API Cookie Preferences
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Navigation Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+      }
+
+      .navbar {
+        background-color: #2c7ce3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        font-family: "Oswald", sans-serif;
+        letter-spacing: 1px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        transition: color 0.3s ease, transform 0.3s ease;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: #e0f2fe;
+        transform: scale(1.1);
+      }
+
+      /* Mobile menu toggle icon */
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 3px 0;
+        transition: 0.4s;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: #2c7ce3;
+          text-align: center;
+          padding: 10px 0;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-links a {
+          margin: 10px 0;
+          display: block;
+        }
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: #2c7ce3;
+        color: white;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .tag {
+        background: #ffca28;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+      .images img {
+        width: 48%;
+        border-radius: 5px;
+      }
+      .steps {
+        margin-top: 20px;
+      }
+      .step {
+        background: #e3f2fd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .step-number {
+        background: #0d47a1;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      @media (max-width: 768px) {
+        .images {
+          flex-direction: column;
+          align-items: center;
+        }
+        .images img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .step {
+          flex-direction: column;
+        }
+      }
+
+      .main-footer {
+        background-color: #2c7ce3;
+        color: #fff;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 2rem;
+      }
+
+      .footer-left {
+        max-width: 300px;
+        flex: 1 1 250px;
+      }
+
+      .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      .footer-cta-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #0d632b;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-cta-button:hover {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+      }
+
+      .footer-columns {
+        display: flex;
+        flex: 3 1 600px;
+        justify-content: space-around;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 130px;
+      }
+
+      .footer-col h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .footer-col a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #2e353b;
+        padding-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: black;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .footer-bottom a {
+        color: #767f88;
+        text-decoration: none;
+      }
+
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+        transition: filter 0.2s ease;
+      }
+
+      .social-icons a:hover img {
+        filter: brightness(1.5) invert(0.7);
+      }
+
+      @media (max-width: 480px) {
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-columns {
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="logo">DynamicTrack</a>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="../index.php">Home</a>
+        <a href="../primarypage/primary.php">Nutrition</a>
+        <a href="../ContactPage/contact.php">Contact Us</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">Barbell / Smith-Machine Bench Press (1)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Barbell-Bench-Press.gif" alt="Exercise Step 1" />
+        <img
+          src="images/Smith-Machine-Incline-Bench-Press.gif"
+          alt="Exercise Step 2"
+        />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Lie flat on a bench with feet planted on the ground. Grip the bar
+            slightly wider than shoulder-width.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Unrack the bar and slowly lower it to your chest, keeping your
+            elbows at a 45-degree angle.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Press the bar back up explosively, fully extending your arms. Keep
+            your core engaged. Repeat for reps.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Machine Pec Fly (2)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Pec-dec-cables.gif" alt="Exercise Step 1" />
+        <img src="images/Pec-Deck-Fly1.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Adjust seat height so handles align with chest. Sit and grip handles
+            with elbows slightly bent.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Slowly bring handles together in front, keeping tension. Focus on
+            squeezing chest muscles.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Return handles to starting position with controlled motion. Keep
+            chest up throughout. Repeat for reps.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Dips / Dips(using Bench) (3)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img src="images/Dips.gif" alt="Exercise Step 1" />
+        <img src="images/Dips(Bench).gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Grip the parallel bars with your arms fully extended and your body
+            straight.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Lower yourself by bending your elbows until your upper arms are
+            parallel to the floor.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Push yourself back up to the starting position by straightening your
+            arms. Keep your core engaged. Repeat for reps.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Normal Pushups / Feet-Elevated Pushups (4)</div>
+      <div class="tag">Novice</div>
+      <div class="images">
+        <img
+          src="images/Incline-Push-Up-On-Stepper.webp"
+          alt="Exercise Step 1"
+        />
+        <img src="images/Decline-Push-Up.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For decline push-ups, place your feet on an elevated surface and
+            your hands on the floor, shoulder-width apart.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Lower your chest toward the floor while keeping your core tight and
+            back straight. Push back up to the starting position.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            For incline push-ups, place your hands on an elevated surface and
+            feet on the ground. Lower your chest, then push back up. Repeat for
+            reps.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <!--footer-->
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-left">
+          <div class="footer-logo">Dynamic Track</div>
+          <p class="footer-text">Find your healthy, and your happy.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          @2025 Dynamic Track, Inc. Community Guidelines Feedback Terms Privacy
+          API Cookie Preferences
+        </p>
+        <div class="social-icons"></div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

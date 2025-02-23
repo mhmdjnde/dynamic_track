@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Navigation Bar</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+      }
+
+      .navbar {
+        background-color: #2c7ce3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .logo {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        font-family: "Oswald", sans-serif;
+        letter-spacing: 1px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        transition: color 0.3s ease, transform 0.3s ease;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover {
+        color: #e0f2fe;
+        transform: scale(1.1);
+      }
+
+      .menu-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .menu-toggle span {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 3px 0;
+        transition: 0.4s;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: flex;
+        }
+
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          background: #2c7ce3;
+          text-align: center;
+          padding: 10px 0;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-links a {
+          margin: 10px 0;
+          display: block;
+        }
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: #2c7ce3;
+        color: white;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .tag {
+        background: #ffca28;
+        color: #333;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-top: 5px;
+      }
+      .images {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+      .images img {
+        width: 48%;
+        border-radius: 5px;
+      }
+      .steps {
+        margin-top: 20px;
+      }
+      .step {
+        background: #e3f2fd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+      }
+      .step-number {
+        background: #0d47a1;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      @media (max-width: 768px) {
+        .images {
+          flex-direction: column;
+          align-items: center;
+        }
+        .images img {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .step {
+          flex-direction: column;
+        }
+      }
+
+      .main-footer {
+        background-color: #2c7ce3;
+        color: #fff;
+        padding: 40px 20px;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        gap: 2rem;
+      }
+
+      .footer-left {
+        max-width: 300px;
+        flex: 1 1 250px;
+      }
+
+      .footer-logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      .footer-cta-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        background-color: #fff;
+        color: #0d632b;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .footer-cta-button:hover {
+        transform: translateY(-2px);
+        background-color: #f0f0f0;
+      }
+
+      .footer-columns {
+        display: flex;
+        flex: 3 1 600px;
+        justify-content: space-around;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 130px;
+      }
+
+      .footer-col h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-col li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-col a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .footer-col a:hover {
+        color: #fff;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid #2e353b;
+        padding-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: black;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .footer-bottom a {
+        color: #767f88;
+        text-decoration: none;
+      }
+
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-icons a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+        transition: filter 0.2s ease;
+      }
+
+      .social-icons a:hover img {
+        filter: brightness(1.5) invert(0.7);
+      }
+
+      @media (max-width: 480px) {
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .footer-columns {
+          flex-direction: column;
+          gap: 1.5rem;
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="logo">DynamicTrack</a>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="../index.php">Home</a>
+        <a href="../primarypage/primary.php">Nutrition</a>
+        <a href="../ContactPage/contact.php">Contact Us</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="header">Squat-Smith-machine (1)</div>
+      <div class="tag">Do one of these</div>
+      <div class="images">
+        <img src="images/squatBarbell.gif" alt="Exercise Step 1" />
+        <img src="images/smith-machine-squat.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Stand with your feet shoulder-width apart, toes slightly turned out,
+            and the barbell resting on your upper back. Engage your core and
+            keep your chest up. The squat primarily targets the quads and
+            glutes, but the rear delts help stabilize the barbell on your back
+            throughout the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Slowly lower your body by bending at the knees and hips, keeping
+            your back straight and chest lifted. Engage your rear delts to help
+            maintain balance and control as you descend into the squat, ensuring
+            your knees don't pass too far beyond your toes.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Drive through your heels and stand back up, extending your hips and
+            knees while keeping your rear delts engaged to maintain proper
+            posture and shoulder stability. Fully extend your legs at the top,
+            then repeat the movement for the desired number of reps.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Leg press (2)</div>
+      <div class="tag">Do one of these</div>
+      <div class="images">
+        <img src="images/LegPress.gif" alt="Exercise Step 1" />
+        <img src="images/leg-press2.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            For dumbbells, sit on a bench with back support, holding dumbbells
+            at shoulder height with palms facing forward. For the machine,
+            adjust the seat so the handles align with your shoulders. Both
+            exercises target the rear deltoid muscles.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Press the dumbbells or machine handles upward, focusing on engaging
+            the rear delts, until your arms are fully extended but not locked
+            out.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Lower the weights back to the starting position in a controlled
+            motion, ensuring the rear delts remain activated throughout. Keep
+            your core engaged and maintain proper posture.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Leg extension(3)</div>
+      <div class="tag">Do one of these</div>
+      <div class="images">
+        <img src="images/LegExtension.gif" alt="Exercise Step 1" />
+        <img src="images/LegExtensionNMachine.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Sit on the leg extension machine with your back against the seat and
+            your feet under the padded bar. Adjust the seat so that your knees
+            are aligned with the machine’s pivot point. The leg extension
+            primarily targets the quadriceps, but the rear delts help stabilize
+            your upper body during the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Extend your legs by straightening your knees, focusing on squeezing
+            your quadriceps at the top of the movement. Keep your rear delts
+            engaged to prevent your shoulders from rounding and to maintain
+            proper posture throughout the exercise.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly lower the weight back to the starting position, maintaining
+            control of the movement and ensuring your rear delts stay engaged to
+            support your upper body.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Hamsting (3)</div>
+      <div class="tag">Do one of these</div>
+      <div class="images">
+        <img src="images/HamstringMachine.gif" alt="Exercise Step 1" />
+        <img src="images/HamstringsCurl.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Lie face down on the hamstring curl machine with your knees just off
+            the edge of the bench and your feet under the padded bar. Adjust the
+            machine so that the pad rests comfortably on your lower legs. The
+            hamstring curl targets the hamstrings, with the rear delts activated
+            as stabilizers to help maintain upper body control throughout the
+            movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Curl your legs upward by bending your knees, focusing on engaging
+            the hamstrings. Keep your rear delts active to prevent any arching
+            of your back and ensure your torso remains stable during the
+            movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly lower the weight back to the starting position in a
+            controlled manner, ensuring rear delts remain engaged to stabilize
+            your upper body and prevent any unnecessary movement.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="container">
+      <div class="header">Calves (3)</div>
+      <div class="tag">Do one of these</div>
+      <div class="images">
+        <img src="images/CalvesMachine.gif" alt="Exercise Step 1" />
+        <img src="images/CalvesDumbbell.gif" alt="Exercise Step 2" />
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <p>
+            Stand with your feet shoulder-width apart on the calf raise machine
+            or on a raised platform with your heels hanging off. Keep your back
+            straight and your chest up, ensuring proper posture. The calf raise
+            primarily targets the calves, but the rear delts help maintain
+            balance and stability throughout the movement.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <p>
+            Rise up onto the balls of your feet by extending your ankles,
+            focusing on squeezing your calves at the top of the movement. Engage
+            your rear delts to help stabilize your torso and maintain balance as
+            you lift your heels.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <p>
+            Slowly lower your heels back to the starting position, maintaining
+            control of the movement. Keep your rear delts engaged to ensure your
+            posture remains stable and your upper body does not sway during the
+            exercise.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!--footer-->
+    <footer class="main-footer">
+      <div class="footer-top">
+        <div class="footer-left">
+          <div class="footer-logo">Dynamic Track</div>
+          <p class="footer-text">Find your healthy, and your happy.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          @2025 Dynamic Track, Inc. Community Guidelines Feedback Terms Privacy
+          API Cookie Preferences
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>
